@@ -1,6 +1,14 @@
 'use client';
-import { Fragment } from "react";
-function AddNewBlog() {
+import { Fragment, useState } from "react";
+import { Button } from "../ui/button";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+
+
+function AddNewBlog( {loading, setLoading, blogFormData, setBlogFormData}) {
+        const [openBlogDialog, setOpenBlogDialog] = useState(false);
+
     return (
         <Fragment>
             <div>
@@ -8,8 +16,9 @@ function AddNewBlog() {
                     Add new Blog
                 </Button>
             </div>
-            <Dialog open={openBlogDialog} onOpenChange={setOpenBlogDialog}>
-                <DialogContent className="sm:max-w-[425px]">
+            <Dialog open={openBlogDialog} onOpenChange={()=>setOpenBlogDialog(!openBlogDialog)}>
+                <DialogContent
+                    className="sm:max-w-[425px]">
                     <DialogHeader>
                         <DialogTitle>Add New Blog</DialogTitle>
                     </DialogHeader>
@@ -19,7 +28,12 @@ function AddNewBlog() {
                                 Title
                             </Label>
                             <Input
-                                id="title"
+                                name="title"
+                                placeholder="Enter blog title"
+                                value={blogFormData?.title}
+                                // onChange={(event) =>setBlogFormData({...blogFormData,title: event.target.value})}
+                                // onChange= {(value)=>handleInputChange(value)}
+                                onChangeCapture={(event) => setBlogFormData({...blogFormData, title:event.currentTarget.value})}
                                 className="col-span-3" />
                         </div>
                         <div className="grid grid-cols-4 items-center gap-4">
@@ -27,12 +41,16 @@ function AddNewBlog() {
                                 Description
                             </Label>
                             <Input
-                                id="description"
+                                name="description"
+                                placeholder="Enter blog description"
+                                value={blogFormData?.description}
+                                onChangeCapture={(event) => setBlogFormData({ ...blogFormData, description: event.currentTarget.value })}
+                                // onChange= {(value)=>handleInputChange(value)}                                id="description"
                                 className="col-span-3" />
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button type="button">Save Chnages</Button>
+                        <Button type="button">Save Changes</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
